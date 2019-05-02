@@ -74,17 +74,16 @@ extension = lambda name, files, libs: Extension(
 	name='sfml.' + name,
 	sources= [os.path.join('src', 'sfml', name, filename) for filename in files],
 	include_dirs=[os.path.join('include', 'Includes')],
-	library_dirs=[os.path.join('extlibs', 'libs-msvc-universal', arch)] if sys.hexversion >= 0x03050000 else [],
 	language='c++',
 	libraries=libs,
 	define_macros=[('SFML_STATIC', '1')] if platform.system() == 'Windows' else [])
 
 if platform.system() == 'Windows':
-	system_libs   = ['winmm', 'sfml-system-s']
-	window_libs   = ['user32', 'advapi32', 'winmm', 'sfml-system-s', 'gdi32', 'opengl32', 'sfml-window-s']
-	graphics_libs = ['user32', 'advapi32', 'winmm', 'sfml-system-s', 'gdi32', 'opengl32', 'sfml-window-s', 'freetype', 'jpeg', 'sfml-graphics-s']
-	audio_libs    = ['winmm', 'sfml-system-s', 'flac', 'vorbisenc', 'vorbisfile', 'vorbis', 'ogg', 'openal32', 'sfml-audio-s']
-	network_libs  = ['ws2_32', 'sfml-system-s', 'sfml-network-s']
+	system_libs   = ['winmm', 'sfml-system-s'][::-1]
+	window_libs   = ['user32', 'advapi32', 'winmm', 'sfml-system-s', 'gdi32', 'opengl32', 'sfml-window-s'][::-1]
+	graphics_libs = ['user32', 'advapi32', 'winmm', 'sfml-system-s', 'gdi32', 'opengl32', 'sfml-window-s', 'freetype', 'jpeg', 'sfml-graphics-s'][::-1]
+	audio_libs    = ['winmm', 'sfml-system-s', 'flac', 'vorbisenc', 'ogg', 'openal32', 'vorbis', 'vorbisfile', 'sfml-audio-s'][::-1]
+	network_libs  = ['ws2_32', 'sfml-system-s', 'sfml-network-s'][::-1]
 else:
 	system_libs   = ['sfml-system']
 	window_libs   = ['sfml-system', 'sfml-window']
