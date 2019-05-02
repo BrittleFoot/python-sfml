@@ -320,7 +320,7 @@ cdef class Transform:
 
     property matrix:
         def __get__(self):
-            return <long>self.p_this.getMatrix()
+            return <long long>self.p_this.getMatrix()
 
     property inverse:
         def __get__(self):

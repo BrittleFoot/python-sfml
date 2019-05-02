@@ -969,7 +969,7 @@ cdef public class Window[type PyWindowType, object PyWindowObject]:
 
     property system_handle:
         def __get__(self):
-            return <unsigned long>self.p_window.getSystemHandle()
+            return <unsigned long long>self.p_window.getSystemHandle()
 
     def on_create(self):
         pass
