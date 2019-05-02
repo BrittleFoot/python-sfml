@@ -172,6 +172,15 @@ cdef public class Vector2[type PyVector2Type, object PyVector2Object]:
 
         return Vector2(self.x / other, self.y / other)
 
+    def __floordiv__(Vector2 self, other):
+        if isinstance(other, Vector2):
+            return Vector2(self.x // other.x, self.y // other.y)
+        elif hasattr(other, '__iter__'):
+            x, y = other
+            return Vector2(self.x // x, self.y // y)
+
+        return Vector2(self.x // other, self.y // other)
+
     def __iadd__(Vector2 self, other):
         if isinstance(other, Vector2):
             self.p_this[0] += (<Vector2>other).p_this[0]
@@ -219,6 +228,21 @@ cdef public class Vector2[type PyVector2Type, object PyVector2Object]:
             self.y /= other
 
         return self
+
+    def __ifloordiv__(Vector2 self, other):
+        if isinstance(other, Vector2):
+            self.x //= other.x
+            self.y //= other.y
+        elif hasattr(other, '__iter__'):
+            x, y = other
+            self.x //= x
+            self.y //= y
+        else:
+            self.x //= other
+            self.y //= other
+
+        return self
+
 
     def __neg__(self):
         cdef sf.Vector2[NumericObject] *p = new sf.Vector2[NumericObject]()

@@ -144,6 +144,19 @@ cdef public class Rect[type PyRectType, object PyRectObject]:
         def __set__(self, height):
             self.p_this.height.set(height)
 
+    property position:
+        def __get__(self):
+            return Vector2(self.p_this.left.get(), self.p_this.top.get())
+
+        def __set__(self, position):
+            if isinstance(position, Vector2):
+                self.left = position.x
+                self.top = position.y
+            else:
+                x, y = position
+                self.left = x
+                self.top = y
+
     property size:
         def __get__(self):
             return Vector2(self.p_this.width.get(), self.p_this.height.get())
