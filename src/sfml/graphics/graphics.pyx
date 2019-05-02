@@ -122,6 +122,14 @@ cdef public class Rect[type PyRectType, object PyRectObject]:
         def __set__(self, top):
             self.p_this.top.set(top)
 
+    property right:
+        def __get__(self):
+            return self.p_this.left.get() + self.p_this.width.get()
+
+    property bottom:
+        def __get__(self):
+            return self.p_this.top.get() + self.p_this.height.get()
+
     property width:
         def __get__(self):
             return self.p_this.width.get()
@@ -135,6 +143,19 @@ cdef public class Rect[type PyRectType, object PyRectObject]:
 
         def __set__(self, height):
             self.p_this.height.set(height)
+
+    property size:
+        def __get__(self):
+            return Vector2(self.p_this.width.get(), self.p_this.height.get())
+
+        def __set__(self, size):
+            if isinstance(size, Vector2):
+                self.width = size.x
+                self.height = size.y
+            else:
+                x, y = size
+                self.width = x
+                self.height = y
 
     def contains(self, point):
         if isinstance(point, Vector2):
