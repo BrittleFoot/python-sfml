@@ -150,13 +150,26 @@ cdef public class Vector2[type PyVector2Type, object PyVector2Object]:
 
     def __mul__(Vector2 self, other):
         cdef sf.Vector2[NumericObject] *p = new sf.Vector2[NumericObject]()
-        p[0] = self.p_this[0] * NumericObject(other)
+
+        if isinstance(other, Vector2):
+            return Vector2(self.x * other.x, self.y * other.y)
+        elif hasattr(other, '__iter__'):
+            x, y = other
+            return Vector2(self.x * x, self.y * y)
+        else:
+            p[0] = self.p_this[0] * NumericObject(other)
 
         return wrap_vector2(p)
 
     # Todo: I couldn't get the / operator working and as a workaround, I
     # reimplemented the logic in Python (I have to report this bug)
     def __truediv__(Vector2 self, other):
+        if isinstance(other, Vector2):
+            return Vector2(self.x / other.x, self.y / other.y)
+        elif hasattr(other, '__iter__'):
+            x, y = other
+            return Vector2(self.x / x, self.y / y)
+
         return Vector2(self.x / other, self.y / other)
 
     def __iadd__(Vector2 self, other):
@@ -178,15 +191,32 @@ cdef public class Vector2[type PyVector2Type, object PyVector2Object]:
         return self
 
     def __imul__(self, other):
-        self.p_this[0] *= NumericObject(other)
+
+        if isinstance(other, Vector2):
+            self.x *= other.x
+            self.y *= other.y
+        elif hasattr(other, '__iter__'):
+            x, y = other
+            self.x *= x
+            self.y *= y
+        else:
+            self.p_this[0] *= NumericObject(other)
 
         return self
 
     # Todo: I couldn't get the =/ operator working and as a workaround, I
     # reimplemented the logic in Python (I have to report this bug)
     def __itruediv__(Vector2 self, other):
-        self.x /= other
-        self.y /= other
+        if isinstance(other, Vector2):
+            self.x /= other.x
+            self.y /= other.y
+        elif hasattr(other, '__iter__'):
+            x, y = other
+            self.x /= x
+            self.y /= y
+        else:
+            self.x /= other
+            self.y /= other
 
         return self
 
